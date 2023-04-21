@@ -12,7 +12,7 @@ public class Main {
         int src = 0;
         int[] costs = new int[graph.size()];
         int[] parents = new int[graph.size()];
-        graph.BellmanFord(src, costs, parents);
+        System.out.println(graph.BellmanFord(src, costs, parents));
         for(int i=0;i< graph.size();i++) System.out.print(costs[i]+ " ");
         System.out.println();
         for(int i=0;i< graph.size();i++) System.out.print(parents[i]+ " ");
