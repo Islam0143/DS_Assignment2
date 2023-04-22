@@ -63,9 +63,17 @@ public class CLI {
     }
 
     private void subMenu2() {
-        System.out.println("To choose Bellman Ford's algorithm enter 1: ");
-        System.out.println("To choose Floyd Warshall's algorithm enter 2: ");
-        System.out.println("To return to main menu enter 3: ");
+        int option;
+        while(true) {
+            System.out.println("To choose Bellman Ford's algorithm enter 1: ");
+            System.out.println("To choose Floyd Warshall's algorithm enter 2: ");
+            System.out.println("To return to main menu enter 3: ");
+            option = scanner.nextInt();
+            if(option == 3) return;
+            if(option != 1 && option != 2) wrongOption();
+            else break;
+        }
+        checkNegativeCycles(option);
         //TODO
     }
 
@@ -96,6 +104,17 @@ public class CLI {
             }
             singleSourceOperations(src, costs, parents);
         }
+    }
+
+    public void checkNegativeCycles(int option) {
+        boolean noNegativeCycles = true;
+        if(option == 1)
+            noNegativeCycles = graph.BellmanFord(0, costs, parents);
+        else {
+            //TODO Floyd warshall function call
+        }
+        if(noNegativeCycles) System.out.println("Graph has no negative cycles");
+        else System.out.println("Graph contains a negative cycle");
     }
 
     private void singleSourceOperations(int src, int[] costs, int[] parents) {
