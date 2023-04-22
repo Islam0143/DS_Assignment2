@@ -4,6 +4,9 @@ import Graph.Graph;
 import java.util.Scanner;
 import java.util.Stack;
 
+
+//{0 3 1 6 7}
+//{-1 2 0 1 3}
 public class CLI {
     private Graph graph;
     private Scanner scanner;
@@ -80,9 +83,8 @@ public class CLI {
     private void invoke(int src, int option) {
         if(src == -1) {                 //src == -1 indicates all pairs shortest path
             if(option == 1) {
-                for(int i = 0; i < graph.size(); i++) {
-                    //TODO Dijkstra function call
-                }
+                for(int i = 0; i < graph.size(); i++)
+                    graph.Dijkstra(i,costs2D[i], parents2D[i]);
             }
             else if(option == 2) {
                 for(int i = 0; i < graph.size(); i++)
@@ -94,9 +96,8 @@ public class CLI {
             allPairsOperations(costs2D, parents2D);
         }
         else {                          //src != -1 indicates single source shortest path
-            if(option == 1) {
-                //TODO Dijkstra function call
-            }
+            if(option == 1)
+                graph.Dijkstra(src, costs, parents);
             else if(option == 2)
                 graph.BellmanFord(src, costs, parents);
             else {
@@ -114,7 +115,7 @@ public class CLI {
             //TODO Floyd warshall function call
         }
         if(noNegativeCycles) System.out.println("Graph has no negative cycles");
-        else System.out.println("Graph contains a negative cycle");
+        else System.out.println("Graph contains negative cycle(s)");
     }
 
     private void singleSourceOperations(int src, int[] costs, int[] parents) {

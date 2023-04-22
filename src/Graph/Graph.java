@@ -38,7 +38,7 @@ public class Graph {
         Arrays.fill(costs, INFINITY);
         costs[src] = 0;
         Arrays.fill(parents, -1);
-        boolean visited [] = new boolean[size];
+        boolean[] visited = new boolean[size];
         PriorityQueue<Vertex> pq = new PriorityQueue<>(Comparator.comparing(Vertex::getCost));
         pq.offer(new Vertex(src , 0));
         while( !pq.isEmpty()) {
@@ -46,11 +46,11 @@ public class Graph {
             if(u.cost > costs[u.value]) {continue;}
             visited[u.value] = true;
             for( Edge edge : adjacencyList[u.value]){
-                int v = edge.to;;
+                int v = edge.to;
                 if(visited[v]) {continue;}
-                if(costs[v] < (u.cost + edge.weight)) {
+                if(costs[u.value] != INFINITY && (costs[u.value] + edge.weight) < costs[v]) {
                     parents[v] = u.value;
-                    costs[v] = (u.cost + edge.weight);
+                    costs[v] = (costs[u.value] + edge.weight);
                     pq.offer(new Vertex(v , costs[v]));
                 }
             }
