@@ -77,11 +77,8 @@ public class CLI {
                 }
             }
             else if(option == 2) {
-                for(int i = 0; i < graph.size(); i++) {
-                    graph.BellmanFord(i, costs, parents);
-                    costs2D[i] = costs.clone();
-                    parents2D[i] = parents.clone();
-                }
+                for(int i = 0; i < graph.size(); i++)
+                    graph.BellmanFord(i, costs2D[i], parents2D[i]);
             }
             else {
                 //TODO Floyd warshall function call
@@ -109,14 +106,22 @@ public class CLI {
             System.out.println("To return to main menu enter 3: ");
             option = scanner.nextInt();
             if(option == 1) {
-                System.out.println("Enter the desired node: ");
-                dest = scanner.nextInt();
-                System.out.println("The cost is: " + costs[dest]);
+                while(true) {
+                    System.out.println("To go back enter -1: ");
+                    System.out.println("Enter the desired node: ");
+                    dest = scanner.nextInt();
+                    if(dest == -1) break;
+                    System.out.println("The cost is: " + costs[dest]);
+                }
             }
             else if(option == 2) {
-                System.out.println("Enter the desired node: ");
-                dest = scanner.nextInt();
-                pathTo(dest, parents);
+                while(true) {
+                    System.out.println("To go back enter -1: ");
+                    System.out.println("Enter the desired node: ");
+                    dest = scanner.nextInt();
+                    if(dest == -1) break;
+                    pathTo(dest, parents);
+                }
             }
             else if(option == 3) break;
             else wrongOption();

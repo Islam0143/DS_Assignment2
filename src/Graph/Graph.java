@@ -39,11 +39,11 @@ public class Graph {
     public boolean BellmanFord(int src, int[] costs, int[] parents) {
         Arrays.fill(costs, INFINITY);
         costs[src] = 0;
-        parents[src] = -1;  //-1 indicates null
+        Arrays.fill(parents, -1);         //-1 indicates null
         for(int k = 0; k < size -1; k++) {      //n-1 iterations
             for(int i = 0; i < size; i++) {
                 for(Pair edge: adjacencyList[i]) {      //for each edge
-                    if(costs[i] + edge.weight < costs[edge.to]) {
+                    if(costs[i] != INFINITY && costs[i] + edge.weight < costs[edge.to]) {
                         costs[edge.to] = costs[i] + edge.weight;
                         parents[edge.to] = i;
                     }
