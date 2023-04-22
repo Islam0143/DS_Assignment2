@@ -1,10 +1,7 @@
 package Graph;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.PriorityQueue;
-import java.util.Scanner;
+import java.util.*;
 
 public class Graph {
 
@@ -41,7 +38,23 @@ public class Graph {
         Arrays.fill(costs, INFINITY);
         costs[src] = 0;
         Arrays.fill(parents, -1);
-        PriorityQueue<Vertex> queue = new PriorityQueue<>();
+        boolean visited [] = new boolean[size];
+        PriorityQueue<Vertex> pq = new PriorityQueue<>(Comparator.comparing(Vertex::getCost));
+        pq.offer(new Vertex(src , 0));
+        while( !pq.isEmpty()) {
+            Vertex u = pq.poll();
+            if(u.cost > costs[u.value]) {continue;}
+            visited[u.value] = true;
+            for( Edge edge : adjacencyList[u.value]){
+                int v = edge.to;;
+                if(visited[v]) {continue;}
+                if(costs[v] < (u.cost + edge.weight)) {
+                    parents[v] = u.value;
+                    costs[v] = (u.cost + edge.weight);
+                    pq.offer(new Vertex(v , costs[v]));
+                }
+            }
+        }
     }
 
     public boolean BellmanFord(int src, int[] costs, int[] parents) {
