@@ -2,14 +2,14 @@ package CLI;
 
 import Graph.Graph;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class CLI {
-
     private Graph graph;
     private Scanner scanner;
+    private int src;
     private int[] costs;
     private int[] parents;
-    private int src;
     private int[][] costs2D;
     private int[][] parents2D;
 
@@ -29,6 +29,7 @@ public class CLI {
 
     private void mainMenu() {
         while(true) {
+            System.out.println("\t\t\t\t\t\tMain Menu");
             System.out.println("To find the shortest paths from source node to all other nodes enter 1: ");
             System.out.println("To find the shortest paths between all the pairs of nodes enter 2: ");
             System.out.println("To check if the graph contains a negative cycle enter 3: ");
@@ -52,9 +53,10 @@ public class CLI {
             System.out.println("To choose Dijkstra's algorithm enter 1: ");
             System.out.println("To choose Bellman Ford's algorithm enter 2: ");
             System.out.println("To choose Floyd Warshall's algorithm enter 3: ");
-            System.out.println("To go to main menu enter 4: ");
+            System.out.println("To return to main menu enter 4: ");
             option = scanner.nextInt();
-            if(option != 1 && option != 2 && option != 3 && option != 4) wrongOption();
+            if(option == 4) return;
+            if(option != 1 && option != 2 && option != 3) wrongOption();
             else break;
         }
         invoke(src, option);
@@ -63,15 +65,30 @@ public class CLI {
     private void subMenu2() {
         System.out.println("To choose Bellman Ford's algorithm enter 1: ");
         System.out.println("To choose Floyd Warshall's algorithm enter 2: ");
-        System.out.println("To go to main menu enter 3: ");
+        System.out.println("To return to main menu enter 3: ");
         //TODO
     }
 
     private void invoke(int src, int option) {
-        if(src == -1) {             //indicates all pairs shortest path
-            //TODO
+        if(src == -1) {                 //src == -1 indicates all pairs shortest path
+            if(option == 1) {
+                for(int i = 0; i < graph.size(); i++) {
+                    //TODO Dijkstra function call
+                }
+            }
+            else if(option == 2) {
+                for(int i = 0; i < graph.size(); i++) {
+                    graph.BellmanFord(i, costs, parents);
+                    costs2D[i] = costs.clone();
+                    parents2D[i] = parents.clone();
+                }
+            }
+            else {
+                //TODO Floyd warshall function call
+            }
+            allPairsOperations(costs2D, parents2D);
         }
-        else {                      //indicates single source shortest path
+        else {                          //src != -1 indicates single source shortest path
             if(option == 1) {
                 //TODO Dijkstra function call
             }
@@ -80,19 +97,50 @@ public class CLI {
             else {
                 //TODO Floyd warshall function call
             }
+            singleSourceOperations(src, costs, parents);
         }
     }
 
-    private void singleSourceOperations() {
+    private void singleSourceOperations(int src, int[] costs, int[] parents) {
+        int option, dest;
+        while(true) {
+            System.out.println("To find the cost from source node " + src + " to specific node enter 1: ");
+            System.out.println("To find the path from source node " + src + " to specific node enter 2: ");
+            System.out.println("To return to main menu enter 3: ");
+            option = scanner.nextInt();
+            if(option == 1) {
+                System.out.println("Enter the desired node: ");
+                dest = scanner.nextInt();
+                System.out.println("The cost is: " + costs[dest]);
+            }
+            else if(option == 2) {
+                System.out.println("Enter the desired node: ");
+                dest = scanner.nextInt();
+                pathTo(dest, parents);
+            }
+            else if(option == 3) break;
+            else wrongOption();
+        }
+    }
+
+    private void allPairsOperations(int[][] costs2D, int[][] parents2D) {
         //TODO
     }
 
-    private void allPairsOperations() {
-        //TODO
+    private void pathTo(int dest, int[] parents) {
+        Stack<Integer> pathStack = new Stack<>();
+        pathStack.push(dest);
+        while(parents[dest] != -1) {
+            pathStack.push(parents[dest]);
+            dest = parents[dest];
+        }
+        System.out.print("The path is: ");
+        while(!pathStack.isEmpty()) System.out.print(pathStack.pop() + " ");
+        System.out.println();
     }
 
     private void wrongOption() {
-        System.out.println("No such option!");
+        System.out.println("No such option! please choose again");
     }
 
     public static void main(String[] args) {
