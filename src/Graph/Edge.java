@@ -1,9 +1,9 @@
 package Graph;
 
-public class Pair {
+public class Edge {
     int to;
     int weight;
-    public Pair(int to, int weight) {
+    public Edge(int to, int weight) {
         this.to = to;
         this.weight = weight;
     }

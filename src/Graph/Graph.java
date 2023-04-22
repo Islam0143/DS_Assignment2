@@ -3,11 +3,12 @@ package Graph;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class Graph {
 
-    private ArrayList<Pair>[] adjacencyList;
+    private ArrayList<Edge>[] adjacencyList;
     private int size;
     private static final Integer INFINITY = Integer.MAX_VALUE;
 
@@ -33,7 +34,14 @@ public class Graph {
     }
 
     private void addEdge(int from, int to, int weight) {
-        adjacencyList[from].add(new Pair(to, weight));
+        adjacencyList[from].add(new Edge(to, weight));
+    }
+
+    public void Dijkstra(int src, int[] costs, int[] parents) {
+        Arrays.fill(costs, INFINITY);
+        costs[src] = 0;
+        Arrays.fill(parents, -1);
+        PriorityQueue<Vertex> queue = new PriorityQueue<>();
     }
 
     public boolean BellmanFord(int src, int[] costs, int[] parents) {
@@ -42,7 +50,7 @@ public class Graph {
         Arrays.fill(parents, -1);         //-1 indicates null
         for(int k = 0; k < size -1; k++) {      //n-1 iterations
             for(int i = 0; i < size; i++) {
-                for(Pair edge: adjacencyList[i]) {      //for each edge
+                for(Edge edge: adjacencyList[i]) {      //for each edge
                     if(costs[i] != INFINITY && costs[i] + edge.weight < costs[edge.to]) {
                         costs[edge.to] = costs[i] + edge.weight;
                         parents[edge.to] = i;
@@ -52,7 +60,7 @@ public class Graph {
         }
         //detect negative cycle
         for(int i = 0; i < size; i++)
-            for(Pair edge: adjacencyList[i])       //for each edge
+            for(Edge edge: adjacencyList[i])       //for each edge
                 if(costs[i] + edge.weight < costs[edge.to])
                     return false;
         return true;
