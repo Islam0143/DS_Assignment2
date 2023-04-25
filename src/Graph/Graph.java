@@ -7,7 +7,7 @@ public class Graph {
 
     private ArrayList<Edge>[] adjacencyList;
     private int size;
-    private static final Integer INFINITY = Integer.MAX_VALUE;
+    private static final Integer INFINITY = Integer.MAX_VALUE / 3;
 
     public Graph(String filePath) {
         try {
@@ -89,5 +89,65 @@ public class Graph {
             return true;
         }
         return false;
+    }
+
+    public boolean floydWarshall(int[][] costs, int[][] predecessors){
+        // If the costs matrix is not initialized yet run the following
+        if(costs == null)
+            costs = new int[size][size];
+        if(predecessors == null)
+            predecessors = new int[size][size];
+        // ----------------------- Separator -----------------------
+        boolean negCycleFlag = true;
+        // ----------------------- Separator -----------------------
+        init_floydWarshallCosts(costs, predecessors);
+        // ----------------------- Separator -----------------------
+        for(int k = 0 ; k < size ; k++)
+            for(int i = 0 ; i < size ; i++)
+                for(int j = 0 ; j < size ; j++) {
+                    if(costs[i][j] > costs[i][k] + costs[k][j]){
+                        costs[i][j] = costs[i][k] + costs[k][j];
+                        predecessors[i][j] = k;
+                    }
+                }
+        // ----------------------- Separator -----------------------
+        for(int i = 0 ; i < size ; i++)
+            if(costs[i][i] < 0) {
+                negCycleFlag = false;
+                break;
+            }
+        // ----------------------- Separator -----------------------
+        System.out.println("Final Costs:");
+        display_adjacencyMatrix(costs);
+        System.out.println();
+        System.out.println("Final Predecessors:");
+        display_adjacencyMatrix(predecessors);
+        return negCycleFlag;
+    }
+
+    public void init_floydWarshallCosts(int[][] costs, int[][] predecessors){     // costs is the adjacency matrix
+        for(int i = 0 ; i < size ; i++) {
+            Arrays.fill(costs[i], INFINITY);
+            costs[i][i] = 0;
+        }
+        int currentNode = 0;
+        for(ArrayList<Edge> tempList : adjacencyList){
+            for(Edge edge : tempList)
+                costs[currentNode][edge.to] = edge.weight;
+            currentNode++;
+        }
+        // ----------------------- Separator -----------------------
+        for(int i = 0 ; i < size ; i++)
+            for(int j = 0 ; j < size ; j++)
+                if(costs[i][j] != INFINITY)
+                    predecessors[i][j] = j;
+    }
+
+    public void display_adjacencyMatrix(int[][] costs){
+        for(int i = 0 ; i < size ; i++) {
+            for (int j = 0; j < size; j++)
+                System.out.print(costs[i][j] + " ");
+            System.out.println();
+        }
     }
 }

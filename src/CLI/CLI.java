@@ -15,12 +15,17 @@ public class CLI {
     private int[] parents;
     private int[][] costs2D;
     private int[][] parents2D;
+    private static final Integer INFINITY = Integer.MAX_VALUE / 3;
 
     public CLI() {
         do {
             System.out.println("enter the full path of the file:");
             scanner = new Scanner(System.in);
-            graph = new Graph(scanner.next() + ".txt");
+            // scan the whole line in case of spaces do exist in the file path.
+            String filePath = scanner.nextLine();
+            if(!filePath.contains(".txt"))
+                filePath += ".txt";
+            graph = new Graph(filePath);
         } while (graph.errorReadingFile());
         int n = graph.size();
         costs = new int[n];
@@ -162,6 +167,21 @@ public class CLI {
         System.out.print("The path is: ");
         while(!pathStack.isEmpty()) System.out.print(pathStack.pop() + " ");
         System.out.println();
+    }
+
+    private void pathTo2D(int src, int dest, int[][] parents2D, int[][] costs2D){
+        String Path = "";
+        int tempDest = parents2D[src][dest];
+        while(tempDest != dest && costs2D[tempDest][dest] != INFINITY){
+            Path = Path.concat(Integer.toString(tempDest) + ", ");
+            tempDest = parents2D[tempDest][dest];
+        }
+        System.out.println("The Path from " + src + " to " + dest + " is: ");
+        if(costs2D[tempDest][dest] != INFINITY) {
+            Path = Path.concat(Integer.toString(tempDest));
+            System.out.println(Path);
+        } else
+            System.out.println("Does not exist.");
     }
 
     private void wrongOption() {
