@@ -19,7 +19,7 @@ public class CLI {
 
     public CLI() {
         do {
-            System.out.println("enter the full path of the file:");
+            System.out.println("Enter the full path of the file:");
             scanner = new Scanner(System.in);
             // scan the whole line in case of spaces do exist in the file path.
             String filePath = scanner.nextLine();
@@ -44,7 +44,7 @@ public class CLI {
             System.out.println("To exit enter 4: ");
             int option = scanner.nextInt();
             if(option == 1) {
-                System.out.println("enter the source node");
+                System.out.println("Enter the source node");
                 src = scanner.nextInt();
                 subMenu1(src);
             }
@@ -87,6 +87,7 @@ public class CLI {
 
     private void invoke(int src, int option) {
         if(src == -1) {                 //src == -1 indicates all pairs shortest path
+            boolean floydChoosed = false;
             if(option == 1) {
                 for(int i = 0; i < graph.size(); i++)
                     graph.Dijkstra(i,costs2D[i], parents2D[i]);
@@ -96,19 +97,23 @@ public class CLI {
                     graph.BellmanFord(i, costs2D[i], parents2D[i]);
             }
             else {
-                //TODO Floyd warshall function call
+                graph.floydWarshall(costs2D, parents2D);
+                floydChoosed = true;
             }
-            allPairsOperations(costs2D, parents2D);
+            allPairsOperations(floydChoosed);
         }
         else {                          //src != -1 indicates single source shortest path
+            boolean floydChoosed = false;
             if(option == 1)
                 graph.Dijkstra(src, costs, parents);
             else if(option == 2)
                 graph.BellmanFord(src, costs, parents);
             else {
-                //TODO Floyd warshall function call
+                graph.floydWarshall(costs2D, parents2D);
+                costs = costs2D[src];
+                floydChoosed = true;
             }
-            singleSourceOperations(src, costs, parents);
+            singleSourceOperations(src, costs, parents, floydChoosed);
         }
     }
 
@@ -117,13 +122,13 @@ public class CLI {
         if(option == 1)
             noNegativeCycles = graph.BellmanFord(0, costs, parents);
         else {
-            //TODO Floyd warshall function call
+            noNegativeCycles = graph.floydWarshall(costs2D, parents2D);
         }
         if(noNegativeCycles) System.out.println("Graph has no negative cycles");
         else System.out.println("Graph contains negative cycle(s)");
     }
 
-    private void singleSourceOperations(int src, int[] costs, int[] parents) {
+    private void singleSourceOperations(int src, int[] costs, int[] parents, boolean floydChoosed) {
         int option, dest;
         while(true) {
             System.out.println("To find the cost from source node " + src + " to specific node enter 1: ");
@@ -145,7 +150,10 @@ public class CLI {
                     System.out.println("Enter the desired node: ");
                     dest = scanner.nextInt();
                     if(dest == -1) break;
-                    pathTo(dest, parents);
+                    if(floydChoosed)
+                        pathTo2D(src, dest);
+                    else
+                        pathTo(dest, parents);
                 }
             }
             else if(option == 3) break;
@@ -153,8 +161,19 @@ public class CLI {
         }
     }
 
-    private void allPairsOperations(int[][] costs2D, int[][] parents2D) {
-        //TODO
+    private void allPairsOperations(boolean floydChoosed) {
+        System.out.println("The cost of all shortest paths is: ");
+        for(int i=0;i<costs2D.length;i++){
+            for(int j=0;j<costs2D[i].length;j++){
+                System.out.println("The cost from node " + i + " to node " + j + " is: "
+                        + costs2D[i][j]);
+                if(!floydChoosed)
+                    pathTo(j, parents2D[i]);
+                else
+                    pathTo2D(i, j);
+                System.out.println();
+            }
+        }
     }
 
     private void pathTo(int dest, int[] parents) {
@@ -169,16 +188,17 @@ public class CLI {
         System.out.println();
     }
 
-    private void pathTo2D(int src, int dest, int[][] parents2D, int[][] costs2D){
+    private void pathTo2D(int src, int dest){
         String Path = "";
         int tempDest = parents2D[src][dest];
         while(tempDest != dest && costs2D[tempDest][dest] != INFINITY){
             Path = Path.concat(Integer.toString(tempDest) + ", ");
             tempDest = parents2D[tempDest][dest];
         }
-        System.out.println("The Path from " + src + " to " + dest + " is: ");
+        System.out.print("The Path from " + src + " to " + dest + " is: ");
         if(costs2D[tempDest][dest] != INFINITY) {
             Path = Path.concat(Integer.toString(tempDest));
+            Path = Integer.toString(src) + ", " + Path;
             System.out.println(Path);
         } else
             System.out.println("Does not exist.");

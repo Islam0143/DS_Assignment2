@@ -107,7 +107,7 @@ public class Graph {
                 for(int j = 0 ; j < size ; j++) {
                     if(costs[i][j] > costs[i][k] + costs[k][j]){
                         costs[i][j] = costs[i][k] + costs[k][j];
-                        predecessors[i][j] = k;
+                        predecessors[i][j] = predecessors[i][k];
                     }
                 }
         // ----------------------- Separator -----------------------
@@ -117,11 +117,11 @@ public class Graph {
                 break;
             }
         // ----------------------- Separator -----------------------
-        System.out.println("Final Costs:");
-        display_adjacencyMatrix(costs);
-        System.out.println();
-        System.out.println("Final Predecessors:");
-        display_adjacencyMatrix(predecessors);
+//        System.out.println("Final Costs:");
+//        display_adjacencyMatrix(costs);
+//        System.out.println();
+//        System.out.println("Final Predecessors:");
+//        display_adjacencyMatrix(predecessors);
         return negCycleFlag;
     }
 
@@ -138,9 +138,14 @@ public class Graph {
         }
         // ----------------------- Separator -----------------------
         for(int i = 0 ; i < size ; i++)
-            for(int j = 0 ; j < size ; j++)
-                if(costs[i][j] != INFINITY)
+            for(int j = 0 ; j < size ; j++) {
+                if (i == j)
+                    predecessors[i][j] = 0;
+                if (costs[i][j] != INFINITY)
                     predecessors[i][j] = j;
+                else
+                    predecessors[i][j] = -1;
+            }
     }
 
     public void display_adjacencyMatrix(int[][] costs){
