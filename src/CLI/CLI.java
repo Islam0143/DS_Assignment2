@@ -4,13 +4,10 @@ import Graph.Graph;
 import java.util.Scanner;
 import java.util.Stack;
 
-
-//{0 3 1 6 7}
-//{-1 2 0 1 3}
 public class CLI {
     private Graph graph;
     private Scanner scanner;
-    private int src;
+    private int src = -1;
     private int[] costs;
     private int[] parents;
     private int[][] costs2D;
@@ -82,7 +79,6 @@ public class CLI {
             else break;
         }
         checkNegativeCycles(option);
-        //TODO
     }
 
     private void invoke(int src, int option) {
@@ -141,7 +137,10 @@ public class CLI {
                     System.out.println("Enter the desired node: ");
                     dest = scanner.nextInt();
                     if(dest == -1) break;
-                    System.out.println("The cost is: " + costs[dest]);
+                    if (costs[dest] != INFINITY)
+                        System.out.println("The cost is: " + costs[dest]);
+                    else
+                        System.out.println("No path, the cost is infinity");
                 }
             }
             else if(option == 2) {
@@ -153,7 +152,7 @@ public class CLI {
                     if(floydChoosed)
                         pathTo2D(src, dest);
                     else
-                        pathTo(dest, parents);
+                        pathTo(src, dest, parents, costs);
                 }
             }
             else if(option == 3) break;
@@ -165,10 +164,14 @@ public class CLI {
         System.out.println("The cost of all shortest paths is: ");
         for(int i=0;i<costs2D.length;i++){
             for(int j=0;j<costs2D[i].length;j++){
-                System.out.println("The cost from node " + i + " to node " + j + " is: "
+                if(costs2D[i][j] != INFINITY)
+                    System.out.println("The cost from node " + i + " to node " + j + " is: "
                         + costs2D[i][j]);
+                else
+                    System.out.println("The cost from node " + i + " to node " + j + " is: Infinity");
+
                 if(!floydChoosed)
-                    pathTo(j, parents2D[i]);
+                    pathTo(i, j, parents2D[i], costs2D[i]);
                 else
                     pathTo2D(i, j);
                 System.out.println();
@@ -176,19 +179,37 @@ public class CLI {
         }
     }
 
-    private void pathTo(int dest, int[] parents) {
+    private void pathTo(int src, int dest, int[] parents, int[] costs) {
+        if(src == dest && costs[src] < 0) {
+            System.out.println("Infinite path");
+            return;
+        }
+        if(parents[dest] == -1 && dest != src) {
+            System.out.println("path does not exist");
+            return;
+        }
         Stack<Integer> pathStack = new Stack<>();
         pathStack.push(dest);
-        while(parents[dest] != -1) {
+        int temp = dest;
+        while(temp != src) {
+            temp = parents[temp];
+            pathStack.push(temp);
+        }
+        /*while(parents[dest] != -1 && src != dest) {
             pathStack.push(parents[dest]);
             dest = parents[dest];
-        }
+        }*/
         System.out.print("The path is: ");
         while(!pathStack.isEmpty()) System.out.print(pathStack.pop() + " ");
+        //while(!pathStack.isEmpty()) pathStack.pop();
         System.out.println();
     }
 
     private void pathTo2D(int src, int dest){
+        /*if(dest == src && costs2D[src][dest] < 0) {
+            System.out.println("Infinite path");
+            return;
+        }*/
         String Path = "";
         int tempDest = parents2D[src][dest];
         while(tempDest != dest && costs2D[tempDest][dest] != INFINITY){

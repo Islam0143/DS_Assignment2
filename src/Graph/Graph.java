@@ -74,8 +74,10 @@ public class Graph {
         //detect negative cycle
         for(int i = 0; i < size; i++)
             for(Edge edge: adjacencyList[i])       //for each edge
-                if(costs[i] + edge.weight < costs[edge.to])
+                if(costs[i] != INFINITY && costs[i] + edge.weight < costs[edge.to]) {
+                    System.out.println(i+" "+ edge.to+" "+ edge.weight);
                     return false;
+                }
         return true;
     }
 
@@ -105,7 +107,7 @@ public class Graph {
         for(int k = 0 ; k < size ; k++)
             for(int i = 0 ; i < size ; i++)
                 for(int j = 0 ; j < size ; j++) {
-                    if(costs[i][j] > costs[i][k] + costs[k][j]){
+                    if(costs[i][j] > costs[i][k] + costs[k][j] && costs[i][k] != INFINITY && costs[k][j] != INFINITY){
                         costs[i][j] = costs[i][k] + costs[k][j];
                         predecessors[i][j] = predecessors[i][k];
                     }
