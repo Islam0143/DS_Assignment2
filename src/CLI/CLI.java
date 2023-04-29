@@ -96,6 +96,12 @@ public class CLI {
                 graph.floydWarshall(costs2D, parents2D);
                 floydChoosed = true;
             }
+            // In case that the graph is invalid, terminate the session
+            if(graph.invalidGraph()){
+                System.out.println("Graph Contains Negative Cycle(s)");
+                System.out.println("Session will be terminated.");
+                System.exit(0);
+            }
             allPairsOperations(floydChoosed);
         }
         else {                          //src != -1 indicates single source shortest path
@@ -108,6 +114,12 @@ public class CLI {
                 graph.floydWarshall(costs2D, parents2D);
                 costs = costs2D[src];
                 floydChoosed = true;
+            }
+            // In case that the graph is invalid, terminate the session
+            if(graph.invalidGraph()){
+                System.out.println("Graph Contains Negative Cycle(s)");
+                System.out.println("Session will be terminated.");
+                System.exit(0);
             }
             singleSourceOperations(src, costs, parents, floydChoosed);
         }
@@ -211,13 +223,20 @@ public class CLI {
             return;
         }*/
         String Path = "";
+        boolean good = true;
         int tempDest = parents2D[src][dest];
-        while(tempDest != dest && costs2D[tempDest][dest] != INFINITY){
+        if(tempDest == -1)
+            good = false;
+        while(good && tempDest != dest && costs2D[tempDest][dest] != INFINITY){
             Path = Path.concat(Integer.toString(tempDest) + ", ");
             tempDest = parents2D[tempDest][dest];
+            if(tempDest == -1 || costs2D[tempDest][tempDest] < 0){
+                good = false;
+                break;
+            }
         }
         System.out.print("The Path from " + src + " to " + dest + " is: ");
-        if(costs2D[tempDest][dest] != INFINITY) {
+        if(good && costs2D[tempDest][dest] != INFINITY) {
             Path = Path.concat(Integer.toString(tempDest));
             Path = Integer.toString(src) + ", " + Path;
             System.out.println(Path);

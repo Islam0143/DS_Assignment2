@@ -8,6 +8,7 @@ public class Graph {
     private ArrayList<Edge>[] adjacencyList;
     private int size;
     private static final Integer INFINITY = Integer.MAX_VALUE / 3;
+    private boolean negCycleFlag = true;
 
     public Graph(String filePath) {
         try {
@@ -124,6 +125,7 @@ public class Graph {
 //        System.out.println();
 //        System.out.println("Final Predecessors:");
 //        display_adjacencyMatrix(predecessors);
+        this.negCycleFlag = negCycleFlag;
         return negCycleFlag;
     }
 
@@ -156,5 +158,9 @@ public class Graph {
                 System.out.print(costs[i][j] + " ");
             System.out.println();
         }
+    }
+
+    public boolean invalidGraph(){
+        return !this.negCycleFlag;
     }
 }
