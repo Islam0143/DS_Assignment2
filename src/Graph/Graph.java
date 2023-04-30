@@ -58,6 +58,14 @@ public class Graph {
         }
     }
 
+    public void dijkstraAllPairs(){
+        for(int i = 0 ; i < getSize() ; i++){
+            int[] tempCosts = new int[getSize()];
+            int[] tempParents = new int[getSize()];
+            Dijkstra(i, tempCosts, tempParents);
+        }
+    }
+
     public boolean BellmanFord(int src, int[] costs, int[] parents) {
         Arrays.fill(costs, INFINITY);
         costs[src] = 0;
@@ -72,14 +80,22 @@ public class Graph {
                 }
             }
         }
-        //detect negative cycle
+        // Detect negative cycle
         for(int i = 0; i < size; i++)
             for(Edge edge: adjacencyList[i])       //for each edge
                 if(costs[i] != INFINITY && costs[i] + edge.weight < costs[edge.to]) {
-                    System.out.println(i+" "+ edge.to+" "+ edge.weight);
+//                    System.out.println(i+" "+ edge.to+" "+ edge.weight);
                     return false;
                 }
         return true;
+    }
+
+    public void bellmanAllPairs(){
+        for(int i = 0 ; i < getSize() ; i++){
+            int[] tempCosts = new int[getSize()];
+            int[] tempParents = new int[getSize()];
+            Dijkstra(i, tempCosts, tempParents);
+        }
     }
 
     public int size() {
@@ -162,5 +178,9 @@ public class Graph {
 
     public boolean invalidGraph(){
         return !this.negCycleFlag;
+    }
+
+    public int getSize(){
+        return this.size;
     }
 }
