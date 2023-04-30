@@ -11,12 +11,15 @@ public class Demo {
         // ----------------------- Separator -----------------------
         String workingDir = System.getProperty("user.dir") + "/Input/" + "graph1.txt";
         ArrayList<String> graphSet = new ArrayList<>();
+        ArrayList<Integer> sizes = new ArrayList<>();
+        ArrayList<Integer> edges = new ArrayList<>();
         for(int i = 1 ; i <= numberOfGraphs ; i++)
             graphSet.add(workingDir.replace("graph1.txt", "graph" + i + ".txt"));
         // ----------------------- Separator -----------------------
         ArrayList<ArrayList<ArrayList<Long>>> analysisOutput = new ArrayList<ArrayList<ArrayList<Long>>>();
         for(String tempGraph : graphSet) {
             Graph g = new Graph(tempGraph);
+            sizes.add(g.getSize());edges.add(g.getNumberOfEdges());
             ArrayList<ArrayList<Long>> algorithmsOutput = new ArrayList<ArrayList<Long>>();
             for (int i = 0; i < 3; i++) {
                 ArrayList<Long> tempOutput = new ArrayList<Long>();
@@ -63,26 +66,28 @@ public class Demo {
         // Print To Google Sheet Format
         // Dijkstra All 2 Pairs Time, Dijkstra Specific 2 Pairs mean time,
         // etc ..
+        int r = 0;
         for(ArrayList<ArrayList<Long>> tempOutput : analysisOutput){
             System.out.println(
+                    sizes.get(r) + "\t" + edges.get(r++) + "\t" +
                     tempOutput.get(0).get(0) + "\t" + tempOutput.get(0).get(1) + "\t" +
                     tempOutput.get(1).get(0) + "\t" + tempOutput.get(1).get(1) + "\t" +
                     tempOutput.get(2).get(0) + "\t" + tempOutput.get(2).get(1) + "\t"
             );
         }
         // ----------------------- Separator -----------------------
-        for(ArrayList<ArrayList<Long>> tempOutput : analysisOutput){
-            System.out.println("Graph Output: Algorithm [All 2 Pairs Time in Micro S, Avg Time for Specific Pairs in Micro S]");
-            System.out.print("\t");
-            System.out.print("Dijkstra's Output: ");
-            System.out.println(tempOutput.get(0).toString());
-            System.out.print("\t");
-            System.out.print("Bellman's Output: ");
-            System.out.println(tempOutput.get(1).toString());
-            System.out.print("\t");
-            System.out.print("Floyd-Warshall's Output: ");
-            System.out.println(tempOutput.get(2).toString());
-        }
+//        for(ArrayList<ArrayList<Long>> tempOutput : analysisOutput){
+//            System.out.println("Graph Output: Algorithm [All 2 Pairs Time in Micro S, Avg Time for Specific Pairs in Micro S]");
+//            System.out.print("\t");
+//            System.out.print("Dijkstra's Output: ");
+//            System.out.println(tempOutput.get(0).toString());
+//            System.out.print("\t");
+//            System.out.print("Bellman's Output: ");
+//            System.out.println(tempOutput.get(1).toString());
+//            System.out.print("\t");
+//            System.out.print("Floyd-Warshall's Output: ");
+//            System.out.println(tempOutput.get(2).toString());
+//        }
         // ----------------------- Separator -----------------------
     }
 }
