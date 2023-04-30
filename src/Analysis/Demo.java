@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Demo {
     public static void main(String[] args) {
-        int numberOfGraphs = 10;
+        int numberOfGraphs = 24;
         // ----------------------- Separator -----------------------
         String workingDir = System.getProperty("user.dir") + "/Input/" + "graph1.txt";
         ArrayList<String> graphSet = new ArrayList<>();
