@@ -11,8 +11,10 @@ import java.util.Set;
 public class GraphGenerator {
     public static void main(String[] args) {
         Random random = new Random();
-        int V = random.nextInt(101);
-        int E = random.nextInt(V*(V-1)/2);
+        /*int V = random.nextInt(101);
+        int E = random.nextInt(V*(V-1)/2);*/
+        int V = 50;
+        int E = 50;
         Set<String> edgeSet = new HashSet<>();
 
         try {
@@ -31,7 +33,7 @@ public class GraphGenerator {
                 int u = random.nextInt(V); // source vertex
                 int v = random.nextInt(V); // destination vertex
                 if (u == v || edgeSet.contains(u + " " + v)) continue;
-                int w = (int)Math.floor(random.nextGaussian() * 12 + 20);   //mean = 20, std dev = 12
+                int w = (int)Math.floor(random.nextGaussian() * 8 + 20);   //mean = 20, std dev = 8
                 //if(random.nextDouble() < 0.03) w = random.nextInt(1)-8;      //negative weights with probability 3%
                 edgeSet.add(u + " " + v);
                 String edge = u + " " + v + " " + w;

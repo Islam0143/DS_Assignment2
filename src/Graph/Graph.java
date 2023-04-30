@@ -6,6 +6,7 @@ import java.util.*;
 public class Graph {
 
     private ArrayList<Edge>[] adjacencyList;
+    int[][] edges;
     private int size;
     private static final Integer INFINITY = Integer.MAX_VALUE / 3;
     private boolean negCycleFlag = true;
@@ -17,12 +18,14 @@ public class Graph {
             size = scanner.nextInt();      //# vertices
             int E = scanner.nextInt();      //# edges
             adjacencyList = new ArrayList[size];
+            edges = new int[E][3];
             for(int i = 0; i < size; i++) adjacencyList[i] = new ArrayList<>();
             for(int i = 0; i < E; i++) {
                 int[] edge = new int[3];
                 edge[0] = scanner.nextInt();
                 edge[1] = scanner.nextInt();
                 edge[2] = scanner.nextInt();
+                edges[i] = edge;
                 addEdge(edge[0], edge[1], edge[2]);
             }
         } catch (Exception e) {
@@ -71,22 +74,17 @@ public class Graph {
         costs[src] = 0;
         Arrays.fill(parents, -1);         //-1 indicates null
         for(int k = 0; k < size -1; k++) {      //n-1 iterations
-            for(int i = 0; i < size; i++) {
-                for(Edge edge: adjacencyList[i]) {      //for each edge
-                    if(costs[i] != INFINITY && costs[i] + edge.weight < costs[edge.to]) {
-                        costs[edge.to] = costs[i] + edge.weight;
-                        parents[edge.to] = i;
-                    }
+            for(int[] edge: edges) {          //for each edge
+                if (costs[edge[0]] != INFINITY && costs[edge[0]] + edge[2] < costs[edge[1]]) {
+                    costs[edge[1]] = costs[edge[0]] + edge[2];
+                    parents[edge[1]] = edge[0];
                 }
             }
         }
-        // Detect negative cycle
-        for(int i = 0; i < size; i++)
-            for(Edge edge: adjacencyList[i])       //for each edge
-                if(costs[i] != INFINITY && costs[i] + edge.weight < costs[edge.to]) {
-//                    System.out.println(i+" "+ edge.to+" "+ edge.weight);
-                    return false;
-                }
+        //detect negative cycle
+        for(int[] edge: edges)           //for each edge
+            if (costs[edge[0]] != INFINITY && costs[edge[0]] + edge[2] < costs[edge[1]])
+                return false;
         return true;
     }
 

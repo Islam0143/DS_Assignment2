@@ -38,7 +38,8 @@ public class CLI {
             System.out.println("To find the shortest paths from source node to all other nodes enter 1: ");
             System.out.println("To find the shortest paths between all the pairs of nodes enter 2: ");
             System.out.println("To check if the graph contains a negative cycle enter 3: ");
-            System.out.println("To exit enter 4: ");
+            System.out.println("To find the size of the graph enter 4: ");
+            System.out.println("To exit enter 5: ");
             int option = scanner.nextInt();
             if(option == 1) {
                 System.out.println("Enter the source node");
@@ -47,7 +48,8 @@ public class CLI {
             }
             else if(option == 2) subMenu1(-1);
             else if(option == 3) subMenu2();
-            else if (option == 4) System.exit(0);
+            else if(option == 4) System.out.println(graph.size());
+            else if (option == 5) System.exit(0);
             else wrongOption();
         }
     }
@@ -193,18 +195,25 @@ public class CLI {
 
     private void pathTo(int src, int dest, int[] parents, int[] costs) {
         if(src == dest && costs[src] < 0) {
-            System.out.println("Infinite path");
+            System.out.println("Infinite path!");
             return;
         }
         if(parents[dest] == -1 && dest != src) {
-            System.out.println("path does not exist");
+            System.out.println("path does not exist!");
             return;
         }
         Stack<Integer> pathStack = new Stack<>();
         pathStack.push(dest);
+        boolean[] inPath = new boolean[graph.size()];
+        inPath[dest] = true;
         int temp = dest;
-        while(temp != src) {
+        while(temp != src && parents[temp] != -1) {
             temp = parents[temp];
+            if(inPath[temp]) {
+                System.out.println("Infinite path!");
+                return;
+            }
+            inPath[temp] = true;
             pathStack.push(temp);
         }
         /*while(parents[dest] != -1 && src != dest) {
@@ -213,7 +222,6 @@ public class CLI {
         }*/
         System.out.print("The path is: ");
         while(!pathStack.isEmpty()) System.out.print(pathStack.pop() + " ");
-        //while(!pathStack.isEmpty()) pathStack.pop();
         System.out.println();
     }
 
