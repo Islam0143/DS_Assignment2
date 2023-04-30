@@ -10,6 +10,7 @@ public class Graph {
     private int size;
     private static final Integer INFINITY = Integer.MAX_VALUE / 3;
     private boolean negCycleFlag = true;
+    private int numberOfEdges;
 
     public Graph(String filePath) {
         try {
@@ -17,6 +18,7 @@ public class Graph {
             Scanner scanner = new Scanner(myFile);
             size = scanner.nextInt();      //# vertices
             int E = scanner.nextInt();      //# edges
+            this.numberOfEdges = E;
             adjacencyList = new ArrayList[size];
             edges = new int[E][3];
             for(int i = 0; i < size; i++) adjacencyList[i] = new ArrayList<>();
@@ -181,4 +183,6 @@ public class Graph {
     public int getSize(){
         return this.size;
     }
+
+    public int getNumberOfEdges() {return this.numberOfEdges;}
 }
