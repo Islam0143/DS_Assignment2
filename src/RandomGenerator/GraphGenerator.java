@@ -13,8 +13,8 @@ public class GraphGenerator {
         Random random = new Random();
         /*int V = random.nextInt(101);
         int E = random.nextInt(V*(V-1)/2);*/
-        int V = 200;
-        int E = 18000;
+        int V = 900;
+        int E = 9000;
         Set<String> edgeSet = new HashSet<>();
 
         try {
@@ -27,7 +27,7 @@ public class GraphGenerator {
             writer1.write(Integer.toString(i+1));
             writer1.close();
 
-            FileWriter writer2 = new FileWriter("Input/graph" + i + ".txt");
+            FileWriter writer2 = new FileWriter("Input/AnalysisGraphs/graph" + i + ".txt");
             writer2.write(V + " " + E + "\n");
             while (edgeSet.size() < E) {
                 int u = random.nextInt(V); // source vertex

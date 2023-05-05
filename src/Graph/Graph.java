@@ -94,7 +94,7 @@ public class Graph {
         for(int i = 0 ; i < getSize() ; i++){
             int[] tempCosts = new int[getSize()];
             int[] tempParents = new int[getSize()];
-            Dijkstra(i, tempCosts, tempParents);
+            BellmanFord(i, tempCosts, tempParents);
         }
     }
 
