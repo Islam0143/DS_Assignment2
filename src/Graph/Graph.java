@@ -111,7 +111,7 @@ public class Graph {
     }
 
     public boolean floydWarshall(int[][] costs, int[][] predecessors){
-        // If the costs matrix is not initialized yet run the following
+        // If the costs' matrix is not initialized yet run the following
         if(costs == null)
             costs = new int[size][size];
         if(predecessors == null)

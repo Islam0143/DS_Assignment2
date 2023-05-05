@@ -13,8 +13,8 @@ public class GraphGenerator {
         Random random = new Random();
         /*int V = random.nextInt(101);
         int E = random.nextInt(V*(V-1)/2);*/
-        int V = 4000;
-        int E = 3000;
+        int V = 200;
+        int E = 18000;
         Set<String> edgeSet = new HashSet<>();
 
         try {
