@@ -589,8 +589,6 @@ public class Tests {
         assertEquals(7, costs[4]);
     }
 
-    @Test
-
     
    @Test
     void simpleGraph6_B(){
