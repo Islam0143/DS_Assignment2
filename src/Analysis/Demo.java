@@ -13,7 +13,7 @@ public class Demo {
         ArrayList<String> graphSet = new ArrayList<>();
         ArrayList<Integer> sizes = new ArrayList<>();
         ArrayList<Integer> edges = new ArrayList<>();
-        for(int i = 1 ; i <= numberOfGraphs ; i++)
+        for(int i = 1 ; i <= 20 ; i++)
             graphSet.add(workingDir.replace("graph1.txt", "graph" + i + ".txt"));
         // ----------------------- Separator -----------------------
         ArrayList<ArrayList<ArrayList<Long>>> analysisOutput = new ArrayList<ArrayList<ArrayList<Long>>>();
@@ -44,7 +44,9 @@ public class Demo {
                     switch (i) {
                         case 0 -> g.Dijkstra(m, costs[m], parents[m]);
                         case 1 -> g.BellmanFord(m, costs[m], parents[m]);
-                        case 2 -> g.floydWarshall(costs, parents);
+                        case 2 -> {
+                            //g.floydWarshall(costs, parents);
+                        }
                     }
                     end = System.nanoTime();
                     tempOutput.add(end - start);
@@ -89,6 +91,11 @@ public class Demo {
 //            System.out.println(tempOutput.get(2).toString());
 //        }
         // ----------------------- Separator -----------------------
+
+
+
+
+
     }
 }
 

@@ -6,7 +6,7 @@ import java.util.*;
 public class Graph {
 
     private ArrayList<Edge>[] adjacencyList;
-    int[][] edges;
+    private int[][] edges;
     private int size;
     private static final Integer INFINITY = Integer.MAX_VALUE / 3;
     private boolean negCycleFlag = true;
@@ -100,6 +100,10 @@ public class Graph {
 
     public int size() {
         return size;
+    }
+
+    public int edgesNumber() {
+        return edges.length;
     }
 
     public boolean errorReadingFile() {

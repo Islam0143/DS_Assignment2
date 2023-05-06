@@ -13,8 +13,10 @@ public class GraphGenerator {
         Random random = new Random();
         /*int V = random.nextInt(101);
         int E = random.nextInt(V*(V-1)/2);*/
-        int V = 200;
-        int E = 18000;
+        int V = 250;
+        int E = 20000;
+
+
         Set<String> edgeSet = new HashSet<>();
 
         try {
@@ -35,6 +37,7 @@ public class GraphGenerator {
                 if (u == v || edgeSet.contains(u + " " + v)) continue;
                 int w = (int)Math.floor(random.nextGaussian() * 8 + 20);   //mean = 20, std dev = 8
                 //if(random.nextDouble() < 0.03) w = random.nextInt(1)-8;      //negative weights with probability 3%
+                if(w < 0) w = -w;
                 edgeSet.add(u + " " + v);
                 String edge = u + " " + v + " " + w;
                 writer2.write(edge + "\n");
