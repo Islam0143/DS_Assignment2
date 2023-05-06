@@ -7,9 +7,9 @@ import java.util.*;
 
 public class Demo {
     public static void main(String[] args) {
-        int numberOfGraphs = 24;
+        int numberOfGraphs = 25;
         // ----------------------- Separator -----------------------
-        String workingDir = System.getProperty("user.dir") + "/Input/" + "graph1.txt";
+        String workingDir = System.getProperty("user.dir") + "/Input/AnalysisGraphs/" + "graph1.txt";
         ArrayList<String> graphSet = new ArrayList<>();
         ArrayList<Integer> sizes = new ArrayList<>();
         ArrayList<Integer> edges = new ArrayList<>();
@@ -35,12 +35,12 @@ public class Demo {
                     }
                 }
                 long end = System.nanoTime();
-                tempOutput.add(end - start);
+                tempOutput.add((end - start) / 1000);
                 // ----------------------- Specific 2 nodes time -----------------------
                 int[][] costs = new int[g.getSize()][g.getSize()];
                 int[][] parents = new int[g.getSize()][g.getSize()];
+                start = System.nanoTime();
                 for (int m = 0; m < g.getSize(); m++) {
-                    start = System.nanoTime();
                     switch (i) {
                         case 0 -> g.Dijkstra(m, costs[m], parents[m]);
                         case 1 -> g.BellmanFord(m, costs[m], parents[m]);
@@ -48,19 +48,19 @@ public class Demo {
                             //g.floydWarshall(costs, parents);
                         }
                     }
-                    end = System.nanoTime();
-                    tempOutput.add(end - start);
                 }
+                end = System.nanoTime();
+                tempOutput.add(((end - start) / g.getSize()) / 1000);
                 // ----------------------- Separator -----------------------
-                long avg = 0;
-                for (int p = 1; p < tempOutput.size(); p++)
-                    avg += tempOutput.get(p);
-                avg /= tempOutput.size();
-                ArrayList<Long> tempList = new ArrayList<>();
-                tempList.add(tempOutput.get(0) / 1000);      // in micro
-                tempList.add(avg / 1000);       // in micro
+//                long avg = 0;
+//                for (int p = 1; p < tempOutput.size(); p++)
+//                    avg += tempOutput.get(p);
+//                avg /= (tempOutput.size() - 1);
+//                ArrayList<Long> tempList = new ArrayList<>();
+//                tempList.add(tempOutput.get(0) / 1000);      // in micro
+//                tempList.add(avg / 1000);       // in micro
                 // ----------------------- Separator -----------------------
-                algorithmsOutput.add(tempList);
+                algorithmsOutput.add(tempOutput);
             }
             analysisOutput.add(algorithmsOutput);
         }

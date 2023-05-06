@@ -29,7 +29,7 @@ public class GraphGenerator {
             writer1.write(Integer.toString(i+1));
             writer1.close();
 
-            FileWriter writer2 = new FileWriter("Input/graph" + i + ".txt");
+            FileWriter writer2 = new FileWriter("Input/AnalysisGraphs/graph" + i + ".txt");
             writer2.write(V + " " + E + "\n");
             while (edgeSet.size() < E) {
                 int u = random.nextInt(V); // source vertex

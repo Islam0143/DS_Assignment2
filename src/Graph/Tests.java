@@ -590,6 +590,9 @@ public class Tests {
     }
 
     @Test
+
+    
+   @Test
     void simpleGraph6_B(){
         Graph graph = new Graph("Input/PerformanceTests/graph6.txt");
         int[] costs = new int[graph.size()];
@@ -603,6 +606,11 @@ public class Tests {
         assertEquals(9, costs[2]);
         assertEquals(5, costs[3]);
         assertEquals(7, costs[4]);
+       assertEquals(0, costs[0]);
+       assertEquals(8 , costs[1]);
+       assertEquals(9, costs[2]);
+       assertEquals(5, costs[3]);
+       assertEquals(7, costs[4]);
     }
 
     @Test
